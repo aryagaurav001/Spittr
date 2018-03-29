@@ -9,12 +9,6 @@
 	href="<c:url value="/resources/style.css" />">
 </head>
 <body>
-	<!--  
-	<h1><s:message code="spitter.welcome" text="Welcome" /></h1>
-	<a href="<c:url value="/spittles" />">Spittles</a> |
-	<a href="<c:url value="/spitter/register" />">Register</a>
-	-->
-
 	<h1>
 		<s:message code="spitter.welcome" text="Welcome" />
 	</h1>
