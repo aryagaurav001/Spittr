@@ -2,6 +2,9 @@ package com.sia.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sia.core.Spitter;
+import com.sia.core.SpitterForm;
 import com.sia.interfaces.SpitterRepository;
 
 @Controller
@@ -27,16 +32,20 @@ public class SpitterController {
 
 	@RequestMapping(value = "/register", method = GET)
 	public String showRegistrationForm(Model model) {
-		model.addAttribute(new Spitter());
+		model.addAttribute(new SpitterForm());
 		return "registerForm";
 	}
 
 	@RequestMapping(value = "/register", method = POST)
-	public String processRegistration(@Valid Spitter spitter, Errors errors) {
+	public String processRegistration(@Valid SpitterForm spitterForm, Errors errors)
+			throws IllegalStateException, IOException {
 		if (errors.hasErrors()) {
 			return "registerForm";
 		}
+		Spitter spitter = spitterForm.toSpitter();
 		spitterRepository.save(spitter);
+		MultipartFile profilePicture = spitterForm.getProfilePicture();
+		profilePicture.transferTo(new File("C:\\spittrdata\\uploads\\" + spitter.getUsername() + ".jpg"));
 		return "redirect:/spitter/" + spitter.getUsername();
 	}
 

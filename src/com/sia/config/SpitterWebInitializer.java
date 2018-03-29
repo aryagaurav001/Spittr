@@ -1,5 +1,8 @@
 package com.sia.config;
 
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class SpitterWebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -17,6 +20,11 @@ public class SpitterWebInitializer extends AbstractAnnotationConfigDispatcherSer
 	@Override
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
+	}
+
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+		registration.setMultipartConfig(new MultipartConfigElement("C:\\spittrdata\\uploads", 2097152, 4194304, 0));
 	}
 
 }
